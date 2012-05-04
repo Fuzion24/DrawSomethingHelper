@@ -24,6 +24,7 @@ public class GoogleImageSearch {
 					.scheme("https").authority("ajax.googleapis.com")
 					.appendEncodedPath("ajax/services/search/images")
 					.appendQueryParameter("v", "1.0")
+					.appendQueryParameter("imgsz", "large")
 					.appendQueryParameter("imgtype", "clipart")
 					.appendQueryParameter("start", Integer.toString(start))
 					.appendQueryParameter("q", searchParameters);

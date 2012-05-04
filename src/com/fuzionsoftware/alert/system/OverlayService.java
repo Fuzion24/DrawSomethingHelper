@@ -2,7 +2,6 @@ package com.fuzionsoftware.alert.system;
 
 import android.app.Service;
 import android.content.Intent;
-//import android.graphics.Bitmap;
 import android.graphics.PixelFormat;
 import android.graphics.drawable.Drawable;
 import android.hardware.Sensor;
@@ -26,7 +25,8 @@ public class OverlayService extends Service implements SensorEventListener{
 	
 	private final IBinder mBinder = new LocalBinder();
 	
-   // private Bitmap mOverlayImage;
+    private Drawable mOverlayDrawable;
+    /* 0 means fully transparent, and 255 means fully opaque*/
     private int mOpacity = 70;
     private View mView;
     private boolean mOverlayEnabled = false;
@@ -42,7 +42,6 @@ public class OverlayService extends Service implements SensorEventListener{
 	    super.onCreate();
 	    Toast.makeText(this, "Service created...", Toast.LENGTH_LONG).show();
 	    enableMotion();
-	    mView = setBitmapOverlay();
 	}
 	
 	private void enableMotion()
@@ -61,6 +60,8 @@ public class OverlayService extends Service implements SensorEventListener{
 			mWmlp.flags = WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE | WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE;
 			mWmlp.type = WindowManager.LayoutParams.TYPE_SYSTEM_ALERT;
 			mWmlp.format = PixelFormat.TRANSPARENT;
+			if(mView == null)
+				setBitmapOverlay();
 			mWindowManager.addView(mView, mWmlp);
 			mOverlayEnabled = true;
 			Toast.makeText(this, "Setting view on ", Toast.LENGTH_SHORT).show();
@@ -71,13 +72,15 @@ public class OverlayService extends Service implements SensorEventListener{
 		}
 	}
 	
-	public View setBitmapOverlay()
+	public void setBitmapOverlay()
 	{
 		ImageView iv = new ImageView(this);
-		Drawable img = this.getApplicationInfo().loadIcon(this.getPackageManager());
-		img.setAlpha(mOpacity);
-		iv.setImageDrawable(img);
-		return iv;
+		if(mOverlayDrawable == null)
+			mOverlayDrawable = this.getApplicationInfo().loadIcon(this.getPackageManager());
+		
+		mOverlayDrawable.setAlpha(mOpacity);
+		iv.setImageDrawable(mOverlayDrawable);
+		mView =  iv;
 	}
 
 	@Override
@@ -104,14 +107,12 @@ public class OverlayService extends Service implements SensorEventListener{
 	@Override
 	public void onAccuracyChanged(Sensor sensor, int accuracy) {}
 	
-	
 	class LocalBinder extends Binder {
 		
-		public void setOverlayImage()
+		public void setOverlayImage(Drawable drawable)
 		{
-			
+			mOverlayDrawable = drawable;
 		}
-			
 	}
 	
 	

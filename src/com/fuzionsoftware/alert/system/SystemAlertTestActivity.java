@@ -10,11 +10,13 @@ import android.os.IBinder;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.GridView;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.Toast;
 
 import com.fuzionsoftware.googleimages.GoogleImageSearch;
@@ -23,14 +25,12 @@ import com.fuzionsoftware.googleimages.UrlImageViewHelper;
 public class SystemAlertTestActivity extends Activity {
 
 	private MyAdapter mAdapter;
-	private ListView mListView;
+	private GridView mGridView;
 	private OverlayService.LocalBinder mService;
 	private ServiceConnection mServiceConnection = new ServiceConnection() {	
 		@Override
 		public void onServiceConnected(ComponentName name, IBinder srv) {
 			mService = (OverlayService.LocalBinder) srv;
-			if(mService != null)
-				mService= null;
 		}
 
 		@Override
@@ -39,6 +39,14 @@ public class SystemAlertTestActivity extends Activity {
 		}
     };
     
+    final OnItemClickListener mImageClickListener = new OnItemClickListener() {
+		@Override
+		public void onItemClick(AdapterView<?> arg0, View arg1, int position, long id) {
+			//Pull back the appropriate bitmap and set that in the service
+			ImageView iv = (ImageView) arg1;
+			mService.setOverlayImage(iv.getDrawable());
+		}
+   };    
     
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -48,9 +56,10 @@ public class SystemAlertTestActivity extends Activity {
         final Button search = (Button)findViewById(R.id.search);
         final EditText searchText = (EditText)findViewById(R.id.search_text);
         
-        mListView = (ListView)findViewById(R.id.results);
+        mGridView = (GridView) findViewById(R.id.gridview);
         mAdapter = new MyAdapter(this);
-        mListView.setAdapter(mAdapter);
+        mGridView.setOnItemClickListener(mImageClickListener);
+        mGridView.setAdapter(mAdapter);
         search.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -107,7 +116,6 @@ public class SystemAlertTestActivity extends Activity {
     	super.onPause();
     	startService(new Intent(this, OverlayService.class));
     	bindService(new Intent(this, OverlayService.class), mServiceConnection, Context.BIND_AUTO_CREATE);
-    	//mService.setOverlayImage();
     }
     
     
@@ -125,14 +133,13 @@ public class SystemAlertTestActivity extends Activity {
             else
                 iv = (ImageView)convertView;
             
-            // yep, that's it. it handles the downloading and showing an interstitial image automagically.
             UrlImageViewHelper.setUrlDrawable(iv, getItem(position));
             
             return iv;
         }
     }
 
-    
+
     
     }
 

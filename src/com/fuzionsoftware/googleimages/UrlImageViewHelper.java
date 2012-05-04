@@ -140,6 +140,7 @@ public final class UrlImageViewHelper {
             e.printStackTrace();
         }
     }
+    
 
     private static void setUrlDrawable(final Context context, final ImageView imageView, final String url, final Drawable defaultDrawable, long cacheDurationMs) {
         cleanup(context);
