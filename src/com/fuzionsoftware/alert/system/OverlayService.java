@@ -2,7 +2,7 @@ package com.fuzionsoftware.alert.system;
 
 import android.app.Service;
 import android.content.Intent;
-import android.graphics.Bitmap;
+//import android.graphics.Bitmap;
 import android.graphics.PixelFormat;
 import android.graphics.drawable.Drawable;
 import android.hardware.Sensor;
@@ -26,7 +26,7 @@ public class OverlayService extends Service implements SensorEventListener{
 	
 	private final IBinder mBinder = new LocalBinder();
 	
-    private Bitmap mOverlayImage;
+   // private Bitmap mOverlayImage;
     private int mOpacity = 70;
     private View mView;
     private boolean mOverlayEnabled = false;
