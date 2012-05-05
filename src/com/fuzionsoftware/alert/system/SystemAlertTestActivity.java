@@ -9,7 +9,10 @@ import android.os.Bundle;
 import android.os.IBinder;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.View.OnFocusChangeListener;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
@@ -24,8 +27,10 @@ import com.fuzionsoftware.googleimages.UrlImageViewHelper;
 
 public class SystemAlertTestActivity extends Activity {
 
-	private MyAdapter mAdapter;
+	private GoogleImageAdapter mAdapter;
 	private GridView mGridView;
+    private Button mSearchButton;
+    private EditText mSearchText;
 	private OverlayService.LocalBinder mService;
 	private ServiceConnection mServiceConnection = new ServiceConnection() {	
 		@Override
@@ -51,16 +56,67 @@ public class SystemAlertTestActivity extends Activity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        this.requestWindowFeature(Window.FEATURE_NO_TITLE);
+
         setContentView(R.layout.main);
-        
-        final Button search = (Button)findViewById(R.id.search);
-        final EditText searchText = (EditText)findViewById(R.id.search_text);
-        
+
         mGridView = (GridView) findViewById(R.id.gridview);
-        mAdapter = new MyAdapter(this);
+        mAdapter = new GoogleImageAdapter(this);
         mGridView.setOnItemClickListener(mImageClickListener);
         mGridView.setAdapter(mAdapter);
-        search.setOnClickListener(new OnClickListener() {
+        mSearchButton = (Button)findViewById(R.id.search);
+        mSearchText = (EditText)findViewById(R.id.search_text);
+        mSearchButton.setOnClickListener(new SearchClickListener());
+        mSearchText.setOnFocusChangeListener(new SearchTextFocusListener());
+    }
+    
+    @Override
+    public void onPause() {
+    	super.onPause();
+    	unbindService(mServiceConnection);
+    }
+    
+    public void hideKeyboard(){
+        //hide keyboard :
+    	//mSearchText.setInputType(InputType.TYPE_NULL);
+        //getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.toggleSoftInput(InputMethodManager.HIDE_NOT_ALWAYS, 0);
+    }
+    
+    public void showKeyboard(){
+    	InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
+    }
+    
+    @Override
+    public void onResume() {
+    	super.onPause();
+        mSearchButton = (Button)findViewById(R.id.search);
+        mSearchText = (EditText)findViewById(R.id.search_text);
+    	startService(new Intent(this, OverlayService.class));
+    	bindService(new Intent(this, OverlayService.class), mServiceConnection, Context.BIND_AUTO_CREATE);
+    }
+    
+    private class SearchTextFocusListener implements OnFocusChangeListener
+    {
+
+		@Override
+		public void onFocusChange(View v, boolean hasFocus) {
+			if(hasFocus)
+			{
+				showKeyboard();
+			}else
+			{
+				hideKeyboard();
+			}
+		}
+    	
+    }
+    
+    private class SearchClickListener implements OnClickListener
+    {
+
             @Override
             public void onClick(View v) {
                 // background the search call!
@@ -80,7 +136,8 @@ public class SystemAlertTestActivity extends Activity {
                                 runOnUiThread(new Runnable() {
                                     @Override
                                     public void run() {
-                                         String searchString = searchText.getText().toString();                                         
+                                         String searchString = mSearchText.getText().toString();    
+                                         hideKeyboard();
                                          int count = 20;
                                         for (String url: GoogleImageSearch.searchGoogleImages(searchString, count)) {
                                             mAdapter.add(url);
@@ -90,7 +147,6 @@ public class SystemAlertTestActivity extends Activity {
 
                         }
                         catch (final Exception ex) {
-                            // explodey error, lets toast it
                             runOnUiThread(new Runnable() {
                                @Override
                                 public void run() {
@@ -102,26 +158,12 @@ public class SystemAlertTestActivity extends Activity {
                 };
                 thread.start();
             }
-        });
+        
     }
     
-    @Override
-    public void onPause() {
-    	super.onPause();
-    	unbindService(mServiceConnection);
-    }
-    
-    @Override
-    public void onResume() {
-    	super.onPause();
-    	startService(new Intent(this, OverlayService.class));
-    	bindService(new Intent(this, OverlayService.class), mServiceConnection, Context.BIND_AUTO_CREATE);
-    }
-    
-    
-    private class MyAdapter extends ArrayAdapter<String> {
+    private class GoogleImageAdapter extends ArrayAdapter<String> {
 
-        public MyAdapter(Context context) {
+        public GoogleImageAdapter(Context context) {
             super(context, 0);
         }
 

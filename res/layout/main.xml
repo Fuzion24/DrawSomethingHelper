@@ -3,11 +3,12 @@
 	android:orientation="vertical" android:layout_width="fill_parent"
 	android:layout_height="fill_parent">
 	<LinearLayout android:orientation="horizontal"
-		android:layout_width="fill_parent" android:layout_height="wrap_content">
-		<EditText android:layout_width="fill_parent"
+		android:layout_width="fill_parent" android:layout_height="60dip">
+		<EditText android:layout_width="0dip"
 			android:layout_height="fill_parent" android:layout_weight="1"
+			android:hint="@string/hint"
 			android:id="@+id/search_text" />
-		<Button android:id="@+id/search" android:text="Search" android:layout_width="wrap_content" android:layout_height="wrap_content" />
+		<Button android:id="@+id/search" android:text="@string/search" android:layout_width="wrap_content" android:layout_height="fill_parent" />
 	</LinearLayout>
 <GridView xmlns:android="http://schemas.android.com/apk/res/android" 
     android:id="@+id/gridview"

@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="hello">Hello World, SystemAlertTestActivity!</string>
+    <string name="search">Search</string>
     <string name="app_name">SystemAlertTest</string>
+    <string name="hint">Image to search for....</string>
 
 </resources>
