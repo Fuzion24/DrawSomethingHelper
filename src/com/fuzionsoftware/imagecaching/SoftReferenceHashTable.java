@@ -1,4 +1,4 @@
-package com.fuzionsoftware.googleimages;
+package com.fuzionsoftware.imagecaching;
 
 import java.lang.ref.SoftReference;
 import java.util.Hashtable;

@@ -4,5 +4,6 @@
     <string name="search">Search</string>
     <string name="app_name">SystemAlertTest</string>
     <string name="hint">Image to search for....</string>
-
+    
+	<color name="white">#FFFFFF</color>
 </resources>

@@ -26,6 +26,14 @@ public class GoogleImageSearch {
 					.appendQueryParameter("v", "1.0")
 					.appendQueryParameter("imgsz", "large")
 					.appendQueryParameter("imgtype", "clipart")
+					/*
+					Specifies the search safety level, which may be one of the following:
+
+					safe=active enables the highest level of safe search filtering.
+					safe=moderate enables moderate safe search filtering (default).			
+					safe=off disables safe search filtering.
+					*/
+					.appendQueryParameter("safe", "off")
 					.appendQueryParameter("start", Integer.toString(start))
 					.appendQueryParameter("q", searchParameters);
 	

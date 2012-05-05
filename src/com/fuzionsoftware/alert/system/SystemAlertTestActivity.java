@@ -23,7 +23,7 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.fuzionsoftware.googleimages.GoogleImageSearch;
-import com.fuzionsoftware.googleimages.UrlImageViewHelper;
+import com.fuzionsoftware.imagecaching.UrlImageViewHelper;
 
 public class SystemAlertTestActivity extends Activity {
 
@@ -104,12 +104,9 @@ public class SystemAlertTestActivity extends Activity {
 		@Override
 		public void onFocusChange(View v, boolean hasFocus) {
 			if(hasFocus)
-			{
 				showKeyboard();
-			}else
-			{
-				hideKeyboard();
-			}
+			else
+				hideKeyboard();	
 		}
     	
     }
@@ -138,7 +135,7 @@ public class SystemAlertTestActivity extends Activity {
                                     public void run() {
                                          String searchString = mSearchText.getText().toString();    
                                          hideKeyboard();
-                                         int count = 20;
+                                         int count = 50;
                                         for (String url: GoogleImageSearch.searchGoogleImages(searchString, count)) {
                                             mAdapter.add(url);
                                         }
@@ -179,9 +176,12 @@ public class SystemAlertTestActivity extends Activity {
             }
             else
             	imageView = (ImageView)convertView;
-            
-            UrlImageViewHelper.setUrlDrawable(imageView, getItem(position));
-            
+                     
+            while (imageView.getDrawable() == null)
+            {
+              UrlImageViewHelper.setUrlDrawable(imageView, getItem(position));
+        	  remove(getItem(position));  
+            }
             return imageView;
         }
     }
