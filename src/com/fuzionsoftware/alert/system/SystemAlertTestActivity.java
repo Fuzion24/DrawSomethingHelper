@@ -169,20 +169,23 @@ public class SystemAlertTestActivity extends Activity {
 
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
-            ImageView iv;
+            ImageView imageView;
             if (convertView == null)
-                convertView = iv = new ImageView(SystemAlertTestActivity.this);
+            {
+                convertView = imageView = new ImageView(SystemAlertTestActivity.this);
+	            imageView.setLayoutParams(new GridView.LayoutParams(150, 150));
+	            imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
+	            imageView.setPadding(8, 8, 8, 8);
+            }
             else
-                iv = (ImageView)convertView;
+            	imageView = (ImageView)convertView;
             
-            UrlImageViewHelper.setUrlDrawable(iv, getItem(position));
+            UrlImageViewHelper.setUrlDrawable(imageView, getItem(position));
             
-            return iv;
+            return imageView;
         }
     }
 
-
-    
     }
 
 
