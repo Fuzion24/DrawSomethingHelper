@@ -176,12 +176,19 @@ public class SystemAlertTestActivity extends Activity {
             }
             else
             	imageView = (ImageView)convertView;
-                     
-            while (imageView.getDrawable() == null)
+            UrlImageViewHelper.setUrlDrawable(imageView, getItem(position));
+            /* TODO: Clean up all null images; This code does that, but is jankity     
+            while (true)
             {
               UrlImageViewHelper.setUrlDrawable(imageView, getItem(position));
-        	  remove(getItem(position));  
+              if(imageView.getDrawable() == null){
+	        	  remove(getItem(position));
+	        	  notifyDataSetChanged();
+              }else{
+            	  break;
+              }
             }
+            */
             return imageView;
         }
     }
