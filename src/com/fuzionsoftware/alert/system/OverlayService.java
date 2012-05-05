@@ -10,7 +10,6 @@ import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Binder;
 import android.os.IBinder;
-import android.view.View;
 import android.view.WindowManager;
 import android.view.WindowManager.LayoutParams;
 import android.widget.ImageView;
@@ -19,6 +18,7 @@ import android.widget.Toast;
 public class OverlayService extends Service implements SensorEventListener{
   	private SensorManager mSensorMgr;
     private long mLastUpdate = -1;
+    private long mLastChanged = -1;
     private float mX, mY, mZ;
     private float last_x, last_y, last_z;
     private static final int SHAKE_THRESHOLD = 800;
@@ -28,7 +28,7 @@ public class OverlayService extends Service implements SensorEventListener{
     private Drawable mOverlayDrawable;
     /* 0 means fully transparent, and 255 means fully opaque*/
     private int mOpacity = 70;
-    private View mView;
+    private static ImageView mView;
     private boolean mOverlayEnabled = false;
     
 	@Override
@@ -42,7 +42,10 @@ public class OverlayService extends Service implements SensorEventListener{
 	    super.onCreate();
 	    Toast.makeText(this, "Service created...", Toast.LENGTH_LONG).show();
 	    enableMotion();
+		if(mView == null)
+			createOrUpdateImageView();
 	}
+	
 	
 	private void enableMotion()
 	{
@@ -60,8 +63,7 @@ public class OverlayService extends Service implements SensorEventListener{
 			mWmlp.flags = WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE | WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE;
 			mWmlp.type = WindowManager.LayoutParams.TYPE_SYSTEM_ALERT;
 			mWmlp.format = PixelFormat.TRANSPARENT;
-			if(mView == null)
-				setBitmapOverlay();
+			//mWindowManager.removeView(mView); //Incase it already exists
 			mWindowManager.addView(mView, mWmlp);
 			mOverlayEnabled = true;
 			Toast.makeText(this, "Setting view on ", Toast.LENGTH_SHORT).show();
@@ -72,30 +74,35 @@ public class OverlayService extends Service implements SensorEventListener{
 		}
 	}
 	
-	public void setBitmapOverlay()
+	public void createOrUpdateImageView()
 	{
-		ImageView iv = new ImageView(this);
+		if(mView == null)
+			mView = new ImageView(this);
+		
 		if(mOverlayDrawable == null)
 			mOverlayDrawable = this.getApplicationInfo().loadIcon(this.getPackageManager());
 		
 		mOverlayDrawable.setAlpha(mOpacity);
-		iv.setImageDrawable(mOverlayDrawable);
-		mView =  iv;
+		mView.setImageDrawable(mOverlayDrawable);
 	}
+
 
 	@Override
 	public void onSensorChanged(SensorEvent event) {
 		 if (event.sensor.getType()==Sensor.TYPE_ACCELEROMETER){ 
-			 	long curTime = System.currentTimeMillis(); // only allow one update every 500ms. 
+			 	long curTime = System.currentTimeMillis(); // only allow one update every 100ms. 
 			 	if ((curTime - mLastUpdate) > 100) { 
 			 		long diffTime = (curTime - mLastUpdate); 
 			 		mLastUpdate = curTime; mX = event.values[0]; 
 			 		mY = event.values[1]; mZ = event.values[2]; 
 			 		float speed = Math.abs(mX+mY+mZ - last_x - last_y - last_z) / diffTime * 10000; 
 			 		if (speed > SHAKE_THRESHOLD) { 
-			 			// yes, this is a shake action! Do something about it! 
-			 			//Toast.makeText(this, "Shake it like a polaroid picture...", Toast.LENGTH_LONG).show();
-			 			toggleOverlay();
+			 			//Make sure that the last update was more than a second ago
+			 			if((curTime - mLastChanged) > 1000) 
+			 			{
+			 				mLastChanged = System.currentTimeMillis();
+			 				toggleOverlay();
+			 			}
 			 		} 
 			 		last_x = mX; 
 			 		last_y = mY; 
@@ -112,6 +119,7 @@ public class OverlayService extends Service implements SensorEventListener{
 		public void setOverlayImage(Drawable drawable)
 		{
 			mOverlayDrawable = drawable;
+			createOrUpdateImageView();
 		}
 	}
 	
