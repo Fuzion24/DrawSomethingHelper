@@ -52,13 +52,14 @@ public class BaseTamperingServer extends NanoHTTPD {
 
 	public static void tearDownServerTraffic()
 	{
-		String[] commands = new String[4];
+		String[] commands = new String[6];
 		//Delete all lines from /etc/hosts that have the have DRAWSOMETHING_HOST contents in them and write result(s) back to /etc/hosts
 		commands[0] = "sed '/" + DRAWSOMETHING_HOST +"/d' /etc/hosts > /etc/hosts";
 		
 		//Remove iptable rule -- It needs to be deleted as many times as it was added, though
 		commands[1] = "iptables -t nat -D OUTPUT --src 0/0 --dst 127.0.0.1 -p tcp --dport 80 -j REDIRECT --to-ports " + INTERNAL_LISTENING_PORT;
-		commands[2] = commands[1];
+		commands[5] = commands[4] = commands[3] = commands[2] = commands[1];
+		 
 				
 		executeAsRoot(commands);
 	}
