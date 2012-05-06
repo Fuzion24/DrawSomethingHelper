@@ -7,7 +7,7 @@ import android.widget.TabHost;
 
 import com.draw.anything.DrawSomethingElseActivity;
 import com.fuzionsoftware.alert.system.R;
-import com.fuzionsoftware.alert.system.SystemAlertTestActivity;
+import com.fuzionsoftware.alert.system.OverlayActivity;
 
 public class ActivityManager extends TabActivity {
 	public void onCreate(Bundle savedInstanceState) {
@@ -18,7 +18,7 @@ public class ActivityManager extends TabActivity {
 	    TabHost.TabSpec spec;  // Resusable TabSpec for each tab
 	    Intent intent;  // Reusable Intent for each tab
 
-	    intent = new Intent().setClass(this, SystemAlertTestActivity.class);
+	    intent = new Intent().setClass(this, OverlayActivity.class);
 	    
 	    spec = tabHost.newTabSpec("helper")
 	                  .setContent(intent)

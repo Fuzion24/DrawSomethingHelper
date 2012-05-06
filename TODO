@@ -6,7 +6,6 @@ TODO:
 	Loading spinner for google images
 	Possibly capture and redraw the same image
 		You spend an hour on an image, you can save that and replay it to many people
-	When the service stops, make sure the iptables / host stuff is cleaned up
 	Use their wordlist to find the correct answer
 	watch for Draw something to start and drop a tray notification
 	Add Settings for transparency and cropping/moving of photos

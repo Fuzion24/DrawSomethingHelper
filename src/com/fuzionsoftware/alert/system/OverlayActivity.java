@@ -28,7 +28,7 @@ import android.widget.ImageView;
 import com.fuzionsoftware.googleimages.GoogleImageSearch;
 import com.fuzionsoftware.imagecaching.UrlImageViewHelper;
 
-public class SystemAlertTestActivity extends Activity {
+public class OverlayActivity extends Activity {
 
 	private GoogleImageAdapter mAdapter;
 	private GridView mGridView;
@@ -134,7 +134,7 @@ public class SystemAlertTestActivity extends Activity {
             ImageView imageView;
             if (convertView == null)
             {
-                convertView = imageView = new ImageView(SystemAlertTestActivity.this);
+                convertView = imageView = new ImageView(OverlayActivity.this);
 	            imageView.setLayoutParams(new GridView.LayoutParams(150, 150));
 	            imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
 	            imageView.setPadding(8, 8, 8, 8);

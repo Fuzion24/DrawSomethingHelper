@@ -21,7 +21,9 @@ import android.widget.Spinner;
 import com.draw.anything.model.Word;
 import com.draw.anything.model.WordList;
 import com.draw.anything.view.WordListAdapter;
+import com.fuzionsoftware.alert.system.OverlayActivity;
 import com.fuzionsoftware.alert.system.R;
+import com.stericson.RootTools.RootTools;
 
 public class DrawSomethingElseActivity extends Activity {
 	
@@ -109,10 +111,11 @@ public class DrawSomethingElseActivity extends Activity {
         wla = new WordListAdapter(this);
         wordlist = (ListView) this.findViewById(R.id.wordlist);
         wordlist.setAdapter(wla);
+		
+        rootRequirementsCheck();
         
         startstop = (Button) this.findViewById(R.id.start_server);
         startstop.setOnClickListener(new OnClickListener(){
-
 			@Override
 			public void onClick(View arg0) {
 				if (service != null) {
@@ -131,6 +134,72 @@ public class DrawSomethingElseActivity extends Activity {
 			}
         	
         });
+    }
+    
+    private void rootRequirementsCheck()
+    {
+		if (RootTools.isRootAvailable()) {
+			if (!RootTools.isBusyboxAvailable())
+				askUserToInstallBusyBox();
+		} else {
+			notifyFailureOpenOverlay("Root is not available on this device");
+		}
+    }
+    
+    private void askUserToInstallBusyBox()
+    {
+    	final AlertDialog.Builder b = new AlertDialog.Builder(this);
+    	b.setIcon(android.R.drawable.ic_dialog_alert);
+    	b.setTitle("Busybox");
+    	b.setMessage("Busybox was not found, would you like to install it now?");
+    	b.setPositiveButton(android.R.string.yes, new  DialogInterface.OnClickListener() {
+
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				try{
+					offerBusyBox();
+				}catch(Exception e)
+				{
+					notifyFailureOpenOverlay("Busybox failed to be installed");
+				}
+			}
+    	} );
+    	b.setNegativeButton(android.R.string.no, new  DialogInterface.OnClickListener() {
+
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				 openOverlay();
+			}
+    	} );
+    	b.show();
+    }
+    
+    private void notifyFailureOpenOverlay(String reason)
+    //Popup to tell the user that this part of the service is not available
+    {
+    	final AlertDialog.Builder b = new AlertDialog.Builder(this);
+    	b.setIcon(android.R.drawable.ic_dialog_alert);
+    	b.setTitle("Word Setter is not available");
+    	b.setMessage(reason);
+    	b.setPositiveButton(android.R.string.yes, new  DialogInterface.OnClickListener() {
+
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				 openOverlay();
+			}
+    	} );
+    	b.show();
+    	
+    }
+    
+    private void offerBusyBox()
+    {
+    	RootTools.offerBusyBox(this);
+    }
+    
+    private void openOverlay()
+    {
+    	this.startActivity(new Intent(getApplicationContext(), OverlayActivity.class));
     }
     
     @Override
