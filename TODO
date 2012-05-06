@@ -9,3 +9,4 @@ TODO:
 	When the service stops, make sure the iptables / host stuff is cleaned up
 	Use their wordlist to find the correct answer
 	watch for Draw something to start and drop a tray notification
+	Add Settings for transparency and cropping/moving of photos
