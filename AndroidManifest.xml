@@ -24,7 +24,7 @@
             android:label="@string/app_name">
 
         </activity>
-        <service android:name="OverlayService"></service>
+        <service android:name=".OverlayService"></service>
         
         <activity
             android:name="com.draw.anything.DrawSomethingElseActivity"

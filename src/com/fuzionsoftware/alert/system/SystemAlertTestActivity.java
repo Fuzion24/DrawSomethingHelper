@@ -52,6 +52,8 @@ public class SystemAlertTestActivity extends Activity {
 		public void onItemClick(AdapterView<?> arg0, View arg1, int position, long id) {
 			//Pull back the appropriate bitmap and set that in the service
 			ImageView iv = (ImageView) arg1;
+			if(iv==null || iv.getDrawable() == null) 
+				return;
 			mService.setOverlayImage(iv.getDrawable());
 		}
    };    
@@ -76,7 +78,7 @@ public class SystemAlertTestActivity extends Activity {
     @Override
     public void onPause() {
     	super.onPause();
-    	unbindService(mServiceConnection);
+    	getApplicationContext().unbindService(mServiceConnection);
     }
     
     public void hideKeyboard(){
@@ -97,18 +99,19 @@ public class SystemAlertTestActivity extends Activity {
     	super.onPause();
         mSearchButton = (Button)findViewById(R.id.search);
         mSearchText = (EditText)findViewById(R.id.search_text);
-    	startService(new Intent(this, OverlayService.class));
-    	bindService(new Intent(this, OverlayService.class), mServiceConnection, Context.BIND_AUTO_CREATE);
+        bindService();
     }
     
+    public void bindService(){
+    	startService(new Intent(getApplicationContext(), OverlayService.class));
+    	getApplicationContext().bindService(new Intent(getApplicationContext(), OverlayService.class), mServiceConnection, Context.BIND_AUTO_CREATE);
+    }
     private class SearchTextFocusListener implements OnFocusChangeListener
     {
-
 		@Override
 		public void onFocusChange(View v, boolean hasFocus) {
 			if(hasFocus) showKeyboard(); else hideKeyboard();	
 		}
-    	
     }
     
     private class SearchClickListener implements OnClickListener
@@ -118,7 +121,6 @@ public class SystemAlertTestActivity extends Activity {
             	hideKeyboard();
             	new GoogleImageSearchTask().execute(mSearchText.getText().toString());
             }
-        
     }
     
     private class GoogleImageAdapter extends ArrayAdapter<String> {
