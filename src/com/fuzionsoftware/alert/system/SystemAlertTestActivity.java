@@ -1,10 +1,16 @@
 package com.fuzionsoftware.alert.system;
 
+import java.net.URL;
+import java.net.URLConnection;
+import java.util.ArrayList;
+
 import android.app.Activity;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.view.View;
@@ -20,10 +26,11 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.ImageView;
-import android.widget.Toast;
 
-import com.fuzionsoftware.googleimages.GoogleImageSearch;
+import com.fuzionsoftware.googleimages.GoogleImageResponse;
+import com.fuzionsoftware.googleimages.GoogleImageResponse.GoogleImageResult;
 import com.fuzionsoftware.imagecaching.UrlImageViewHelper;
+import com.google.gson.Gson;
 
 public class SystemAlertTestActivity extends Activity {
 
@@ -103,57 +110,17 @@ public class SystemAlertTestActivity extends Activity {
 
 		@Override
 		public void onFocusChange(View v, boolean hasFocus) {
-			if(hasFocus)
-				showKeyboard();
-			else
-				hideKeyboard();	
+			if(hasFocus) showKeyboard(); else hideKeyboard();	
 		}
     	
     }
     
     private class SearchClickListener implements OnClickListener
     {
-
             @Override
             public void onClick(View v) {
-                // background the search call!
-                Thread thread = new Thread() {
-                    @Override
-                    public void run() {
-                        try {
-                            // clear existing results
-                            runOnUiThread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    mAdapter.clear();
-                                }
-                            });
-                            
-                                // add the results to the adapter
-                                runOnUiThread(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                         String searchString = mSearchText.getText().toString();    
-                                         hideKeyboard();
-                                         int count = 50;
-                                        for (String url: GoogleImageSearch.searchGoogleImages(searchString, count)) {
-                                            mAdapter.add(url);
-                                        }
-                                    }
-                                });
-
-                        }
-                        catch (final Exception ex) {
-                            runOnUiThread(new Runnable() {
-                               @Override
-                                public void run() {
-                                   Toast.makeText(SystemAlertTestActivity.this, ex.toString(), Toast.LENGTH_LONG).show();
-                                } 
-                            });
-                        }
-                    }
-                };
-                thread.start();
+            	hideKeyboard();
+            	new GoogleImageSearch().execute(mSearchText.getText().toString());
             }
         
     }
@@ -174,8 +141,9 @@ public class SystemAlertTestActivity extends Activity {
 	            imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
 	            imageView.setPadding(8, 8, 8, 8);
             }
-            else
+            else{
             	imageView = (ImageView)convertView;
+            }
             UrlImageViewHelper.setUrlDrawable(imageView, getItem(position));
             /* TODO: Clean up all null images; This code does that, but is jankity     
             while (true)
@@ -192,7 +160,61 @@ public class SystemAlertTestActivity extends Activity {
             return imageView;
         }
     }
+    private class GoogleImageSearch extends AsyncTask<String,Void,ArrayList<String>> {
 
+    	protected void onPreExecute (){
+    		mAdapter.clear();
+    	}
+    	@Override
+    	protected ArrayList<String> doInBackground(String... searchParameters) {
+    		ArrayList<String> urls = new ArrayList<String>();
+    		int start = 0;
+    		int count = 50;
+    		try {
+    			while(start < count)
+    			{
+    				//https://developers.google.com/image-search/v1/jsondevguide
+    				Uri.Builder uri = new Uri.Builder()
+    					.scheme("https").authority("ajax.googleapis.com")
+    					.appendEncodedPath("ajax/services/search/images")
+    					.appendQueryParameter("v", "1.0")
+    					.appendQueryParameter("imgsz", "large")
+    					.appendQueryParameter("imgtype", "clipart")
+    					/*
+    					Specifies the search safety level, which may be one of the following:
+
+    					safe=active enables the highest level of safe search filtering.
+    					safe=moderate enables moderate safe search filtering (default).			
+    					safe=off disables safe search filtering.
+    					*/
+    					.appendQueryParameter("safe", "off")
+    					.appendQueryParameter("start", Integer.toString(start))
+    					.appendQueryParameter("q", searchParameters[0]);
+    	
+    				URLConnection connection = new URL(uri.toString()).openConnection();
+    				
+    				//http://stackoverflow.com/questions/309424/in-java-how-do-i-read-convert-an-inputstream-to-a-string
+    				String json_results = new java.util.Scanner(connection.getInputStream()).useDelimiter("\\A").next();
+    				
+    		        GoogleImageResponse gImages = new Gson().fromJson(json_results, GoogleImageResponse.class);
+    		        
+    		        for(GoogleImageResult result : gImages.responseData.results)
+    		        	urls.add(result.url);
+    		        
+    		        start += gImages.responseData.results.length;
+    			}
+    		} catch (Exception e) {
+    			e.printStackTrace();
+    		}
+    		return urls;
+    	}
+    	
+    	protected void onPostExecute (ArrayList<String> results){
+    		for(String s: results)
+    			mAdapter.add(s);
+    		mAdapter.notifyDataSetChanged();
+    	}
+    }
     }
 
 
