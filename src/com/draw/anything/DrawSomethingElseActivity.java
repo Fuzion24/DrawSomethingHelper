@@ -66,7 +66,7 @@ public class DrawSomethingElseActivity extends Activity {
     	final View     prompt = this.getLayoutInflater().inflate(R.layout.add_word, null);
     	final EditText word   = (EditText) prompt.findViewById(R.id.add_word_word);
     	final Spinner  coins  = (Spinner)  prompt.findViewById(R.id.add_word_coins);
-    	
+    	coins.setSelection(2); //Set spinner to 3 coins by default
     	final AlertDialog.Builder alert = new AlertDialog.Builder(this).
 			setTitle(R.string.add_word_title).
 			setView(prompt).

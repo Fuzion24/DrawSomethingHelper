@@ -59,7 +59,9 @@ public class WordListService extends Service {
 	
 	@Override
 	public void onCreate() {
-		wordlist = WordList.getDefaultWordList(this.getResources());
+		//wordlist = WordList.getDefaultWordList(this.getResources());
+		wordlist = new WordList();
+		setMinimumDefault();
 		super.onCreate();
 	}
 	
@@ -73,7 +75,13 @@ public class WordListService extends Service {
 		stopServer();
 		super.onDestroy();
 	}
-
+	private void setMinimumDefault()
+	{
+		wordlist.addWord(new Word("one",1,1));
+		wordlist.addWord(new Word("onefive",1,0));
+		wordlist.addWord(new Word("two",2,0));
+		wordlist.addWord(new Word("twofive",2,1));
+	}
 	@Override
 	public IBinder onBind(Intent arg0) {
 		return binder;
@@ -113,6 +121,7 @@ public class WordListService extends Service {
 		
 		public void clearWords() {
 			wordlist.clearWords();
+			setMinimumDefault();
 			notifyChange();
 		}
 		
