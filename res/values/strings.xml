@@ -2,7 +2,7 @@
 <resources>
 
     <string name="search">Search</string>
-    <string name="app_name">DrawSomethingElseHelper</string>
+    <string name="app_name">Draw Help</string>
     <string name="hint">Image to search for....</string>
     
 	<color name="white">#FFFFFF</color>
