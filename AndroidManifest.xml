@@ -30,7 +30,7 @@
             android:name="com.draw.anything.DrawSomethingElseActivity"
             android:label="@string/app_name" >
         </activity>
-        <service android:name=".WordListService"></service>
+        <service android:name="com.draw.anything.WordListService"></service>
     </application>
 
 </manifest>

@@ -13,7 +13,6 @@ import android.os.IBinder;
 import android.view.WindowManager;
 import android.view.WindowManager.LayoutParams;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 public class OverlayService extends Service implements SensorEventListener{
   	private SensorManager mSensorMgr;
@@ -33,14 +32,14 @@ public class OverlayService extends Service implements SensorEventListener{
     
 	@Override
 	public IBinder onBind(Intent intent) {
-		Toast.makeText(this, "Service binded...", Toast.LENGTH_LONG).show();
+		//Toast.makeText(this, "Service binded...", Toast.LENGTH_LONG).show();
 		return mBinder;
 	}
 	
 	@Override
 	public void onCreate() {
 	    super.onCreate();
-	    Toast.makeText(this, "Service created...", Toast.LENGTH_LONG).show();
+	    //Toast.makeText(this, "Service created...", Toast.LENGTH_LONG).show();
 	    enableMotion();
 		if(mView == null)
 			createOrUpdateImageView();
@@ -63,14 +62,13 @@ public class OverlayService extends Service implements SensorEventListener{
 			mWmlp.flags = WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE | WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE;
 			mWmlp.type = WindowManager.LayoutParams.TYPE_SYSTEM_ALERT;
 			mWmlp.format = PixelFormat.TRANSPARENT;
-			//mWindowManager.removeView(mView); //Incase it already exists
 			mWindowManager.addView(mView, mWmlp);
 			mOverlayEnabled = true;
-			Toast.makeText(this, "Setting view on ", Toast.LENGTH_SHORT).show();
+			//Toast.makeText(this, "Setting view on ", Toast.LENGTH_SHORT).show();
 		}else{
 			mWindowManager.removeView(mView);
 			mOverlayEnabled = false;
-			Toast.makeText(this, "Setting view off...", Toast.LENGTH_SHORT).show();
+			//Toast.makeText(this, "Setting view off...", Toast.LENGTH_SHORT).show();
 		}
 	}
 	

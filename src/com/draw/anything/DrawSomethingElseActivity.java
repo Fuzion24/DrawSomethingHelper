@@ -166,13 +166,13 @@ public class DrawSomethingElseActivity extends Activity {
     @Override
     public void onResume() {
     	super.onResume();
-    	startService(new Intent(this, WordListService.class));
-    	bindService(new Intent(this, WordListService.class), sc, Context.BIND_AUTO_CREATE);
+    	getApplicationContext().startService(new Intent(getApplicationContext(), WordListService.class));
+    	getApplicationContext().bindService(new Intent(getApplicationContext(), WordListService.class), sc, Context.BIND_AUTO_CREATE);
     }
     
     @Override
     public void onPause() {
     	super.onPause();
-    	unbindService(sc);
+    	getApplicationContext().unbindService(sc);
     }
 }
