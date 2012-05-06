@@ -1,0 +1,6 @@
+
+    <menu xmlns:android="http://schemas.android.com/apk/res/android">
+        <item android:id="@+id/menu_clear" android:title="Clear" android:visible="true" android:menuCategory="system" android:alphabeticShortcut="c" android:orderInCategory="0"></item>
+        <item android:id="@+id/menu_quit" android:title="Quit" android:menuCategory="system" android:alphabeticShortcut="q" android:visible="true" android:orderInCategory="2"></item>
+        <item android:id="@+id/menu_reload_default" android:title="Reload" android:orderInCategory="1" android:alphabeticShortcut="r" android:visible="true"></item>
+    </menu>

@@ -1,0 +1,310 @@
+{
+	"Coins":[
+		{
+			"ProductID":{
+				"ios":"com.omgpop.dmtmobile.coins400",
+				"android":"com.omgpop.dmtmobile.coins400"
+			},
+			"Icon":1,
+			"Quantity":400,
+			"Price":199,
+			"Available":true
+		},
+		{
+			"ProductID":{
+				"ios":"com.omgpop.dmtmobile.coins1200",
+				"android":"com.omgpop.dmtmobile.coins1200"
+			},
+			"Icon":2,
+			"Quantity":1200,
+			"Callout":{
+				"en":"SAVE\n15%"
+			},
+			"Price":499,
+			"Available":true
+		},
+		{
+			"ProductID":{
+				"ios":"com.omgpop.dmtmobile.coins3000",
+				"android":"com.omgpop.dmtmobile.coins3000"
+			},
+			"Icon":3,
+			"Quantity":3000,
+			"Callout":{
+				"en":"SAVE\n33%"
+			},
+			"Price":999,
+			"Available":true
+		},		
+		{
+			"ProductID":{
+				"ios":"com.omgpop.dmtmobile.coins10000",
+				"android":"com.omgpop.dmtmobile.coins10000"
+			},
+			"Icon":3,
+			"Quantity":10000,
+			"Callout":{
+				"en":"SAVE\n50%"
+			},
+			"Price":2499,
+			"Available":true
+		}
+	],
+	
+	"Bombs":[
+		{
+			"ProductID":9268,
+			"Price":400,
+			"Quantity":10,
+			"Available":true
+		},
+		
+		{
+			"ProductID":9270,
+			"Price":720,
+			"Quantity":20,
+			"Callout":{
+				"en":"SAVE\n10%"
+			},
+			"Available":true
+		},
+		
+		{
+			"ProductID":9271,
+			"Price":1600,
+			"Quantity":50,
+			"Callout":{
+				"en":"SAVE\n20%"
+			},
+			"Available":true
+		}
+	],
+	
+	"Colors":[
+		{
+			"ProductID": 9277,
+			"Colors": [
+				"603913",
+				"8B5E3C",
+				"FF958F",
+				"F7E3AC",
+				"F7EBDE"
+			],
+			"Price": 249,
+			"Name": {
+				"en": "ice cream package"
+			},
+			"Available":true
+		},
+		{
+			"ProductID": 9278,
+			"Colors": [
+				"8D3523",
+				"EB7C00",
+				"FF6000",
+				"E63200",
+				"FFD900"
+			],
+			"Price": 249,
+			"Name": {
+				"en": "fall package"
+			},
+			"Available":true
+		},
+		{
+			"ProductID": 9279,
+			"Colors": [
+				"5D5151",
+				"BE1E2D",
+				"00A651",
+				"F7DC1E",
+				"0103D9"
+			],
+			"Price": 249,
+			"Name": {
+				"en": "holiday package"
+			},
+			"Available":true
+		},
+		{
+			"ProductID": 9646,
+			"Colors": [
+				"D790E6",
+				"A4EF81",
+				"37DDD9",
+				"F85894",
+				"F8C50A"
+			],
+			"Price": 249,
+			"Name": {
+				"en": "spring package"
+			},
+			"Available":true
+		},
+		{
+			"ProductID": 9647,
+			"Colors": [
+				"D7C59B",
+				"DEE8DC",
+				"2DBBFF",
+				"47D9FF",
+				"81FFFF"
+			],
+			"Price": 249,
+			"Name": {
+				"en": "beach package"
+			},
+			"Available":true
+		},
+		{
+			"ProductID": 9648,
+			"Colors": [
+				"39B54A",
+				"92278F",
+				"FBB040",
+				"C49A6C",
+				"939598"
+			],
+			"Price": 249,
+			"Name": {
+				"en": "mardi gras package"
+			},
+			"Available":true
+		},
+		{
+			"ProductID": 9649,
+			"Colors": [
+				"00FF00",
+				"00FFFF",
+				"FF38FF",
+				"FF2800",
+				"FFFF28"
+			],
+			"Price": 249,
+			"Name": {
+				"en": "neon package"
+			},
+			"Available":true
+		},
+		{
+			"ProductID": 9650,
+			"Colors": [
+				"E6E7E8",
+				"D1D3D4",
+				"939598",
+				"58595B",
+				"231F20"
+			],
+			"Price": 249,
+			"Name": {
+				"en": "grayscale package"
+			},
+			"Available":true
+		},
+		{
+			"ProductID": 9651,
+			"Colors": [
+				"FDDACC",
+				"F9AD9D",
+				"F58774",
+				"F15B4A",
+				"ED1C24"
+			],
+			"Price": 249,
+			"Name": {
+				"en": "shades of red"
+			},
+			"Available":true
+		},
+		{
+			"ProductID": 9652,
+			"Colors": [
+				"FDE2AE",
+				"F9C67F",
+				"F5AF56",
+				"F1902E",
+				"F27000"
+			],
+			"Price": 249,
+			"Name": {
+				"en": "shades of orange"
+			},
+			"Available":true
+		},
+		{
+			"ProductID": 9653,
+			"Colors": [
+				"FFF9C5",
+				"FAEF95",
+				"FAE95D",
+				"FCE83C",
+				"FADF1B"
+			],
+			"Price": 249,
+			"Name": {
+				"en": "shades of yellow"
+			},
+			"Available":true
+		},
+		{
+			"ProductID": 9654,
+			"Colors": [
+				"A2EB9A",
+				"7DE670",
+				"5EE64F",
+				"40E327",
+				"27D609"
+			],
+			"Price": 249,
+			"Name": {
+				"en": "shades of green"
+			},
+			"Available":true
+		},
+		{
+			"ProductID": 9655,
+			"Colors": [
+				"9AC3EB",
+				"70ADE6",
+				"4F9BE6",
+				"278DE3",
+				"0081E6"
+			],
+			"Price": 249,
+			"Name": {
+				"en": "shades of blue"
+			},
+			"Available":true
+		},
+		{
+			"ProductID": 9656,
+			"Colors": [
+				"C19AEB",
+				"A870E6",
+				"974FE6",
+				"7D27E3",
+				"6700E6"
+			],
+			"Price": 249,
+			"Name": {
+				"en": "shades of purple"
+			},
+			"Available":true
+		},
+		{
+			"ProductID": 9657,
+			"Colors": [
+				"A6857A",
+				"A16C58",
+				"914E33",
+				"6E2F15",
+				"5E1C00"
+			],
+			"Price": 249,
+			"Name": {
+				"en": "shades of brown"
+			},
+			"Available":true
+		}
+	]
+}

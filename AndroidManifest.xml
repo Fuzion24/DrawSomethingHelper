@@ -19,6 +19,12 @@
             </intent-filter>
         </activity>
         <service android:name="OverlayService"></service>
+        
+        <activity
+            android:name=".DrawSomethingElseActivity"
+            android:label="@string/app_name" >
+        </activity>
+        <service android:name=".WordListService"></service>
     </application>
 
 </manifest>

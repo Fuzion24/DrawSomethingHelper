@@ -1,0 +1,22 @@
+{
+    "free":{
+        "ios":{
+            "version":4,
+            "url":"http://itunes.apple.com/us/app/draw-something-free/id488628250?ls=1&mt=8"
+        },
+        "android":{
+            "version":4,
+            "url":"market://details?id=com.omgpop.dstfree"
+        }
+    },
+    "paid":{
+        "ios":{
+            "version":4,
+            "url":"http://itunes.apple.com/us/app/draw-something-by-omgpop/id488627858?ls=1&mt=8"
+        },
+        "android":{
+            "version":4,
+            "url":"market://details?id=com.omgpop.dstpaid"
+        }
+    }
+}
