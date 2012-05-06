@@ -1,0 +1,11 @@
+TODO: 
+	Resize the overlay to fit in the drawsomething box when the image is too big
+	Add help items to the overlay 
+		i.e. (shake to remove)
+	When someone searches for a word, set that as the one that will be played
+	Loading spinner for google images
+	Possibly capture and redraw the same image
+		You spend an hour on an image, you can save that and replay it to many people
+	When the service stops, make sure the iptables / host stuff is cleaned up
+	Use their wordlist to find the correct answer
+	watch for Draw something to start and drop a tray notification
