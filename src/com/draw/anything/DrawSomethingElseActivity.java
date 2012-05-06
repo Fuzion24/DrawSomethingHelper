@@ -104,7 +104,7 @@ public class DrawSomethingElseActivity extends Activity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.main);
+        setContentView(R.layout.draw_something);
         
         wla = new WordListAdapter(this);
         wordlist = (ListView) this.findViewById(R.id.wordlist);
