@@ -18,6 +18,8 @@
     <string name="ok">OK</string>
     <string name="cancel">Cancel</string>
     <string name="error">Error</string>
+    <string name="overlay_description">Image Overlay</string>
+    <string name="shake_to_remove">Shake to Remove</string>
     <string name="word_validation_error">Error adding word. Please ensure that your word contains only the letters a-z and is 1 to 9 letters long</string>
     <string name="start_server">Start Server</string>
     <string name="stop_server">Stop Server</string>

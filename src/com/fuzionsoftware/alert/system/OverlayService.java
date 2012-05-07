@@ -10,6 +10,8 @@ import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Binder;
 import android.os.IBinder;
+import android.view.LayoutInflater;
+import android.view.View;
 import android.view.WindowManager;
 import android.view.WindowManager.LayoutParams;
 import android.widget.ImageView;
@@ -27,7 +29,7 @@ public class OverlayService extends Service implements SensorEventListener{
     private Drawable mOverlayDrawable;
     /* 0 means fully transparent, and 255 means fully opaque*/
     private int mOpacity = 70;
-    private static ImageView mView;
+    private static View mOverlayView;
     private boolean mOverlayEnabled = false;
     
 	@Override
@@ -41,7 +43,7 @@ public class OverlayService extends Service implements SensorEventListener{
 	    super.onCreate();
 	    //Toast.makeText(this, "Service created...", Toast.LENGTH_LONG).show();
 	    enableMotion();
-		if(mView == null)
+		if(mOverlayView == null)
 			createOrUpdateImageView();
 	}
 	
@@ -62,11 +64,11 @@ public class OverlayService extends Service implements SensorEventListener{
 			mWmlp.flags = WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE | WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE;
 			mWmlp.type = WindowManager.LayoutParams.TYPE_SYSTEM_ALERT;
 			mWmlp.format = PixelFormat.TRANSPARENT;
-			mWindowManager.addView(mView, mWmlp);
+			mWindowManager.addView(mOverlayView, mWmlp);
 			mOverlayEnabled = true;
 			//Toast.makeText(this, "Setting view on ", Toast.LENGTH_SHORT).show();
 		}else{
-			mWindowManager.removeView(mView);
+			mWindowManager.removeView(mOverlayView);
 			mOverlayEnabled = false;
 			//Toast.makeText(this, "Setting view off...", Toast.LENGTH_SHORT).show();
 		}
@@ -74,14 +76,22 @@ public class OverlayService extends Service implements SensorEventListener{
 	
 	public void createOrUpdateImageView()
 	{
-		if(mView == null)
-			mView = new ImageView(this);
-		
 		if(mOverlayDrawable == null)
 			mOverlayDrawable = this.getApplicationInfo().loadIcon(this.getPackageManager());
 		
+		if(mOverlayView == null)
+		{
+			LayoutInflater vi = (LayoutInflater) getSystemService(Service.LAYOUT_INFLATER_SERVICE);
+			mOverlayView = vi.inflate(R.layout.overlay_layout, null);
+			ImageView shakeToRemoveImageView = (ImageView) mOverlayView.findViewById(R.id.shake_to_remove);
+			Drawable shakeToRemoveDrawable = getApplicationContext().getResources().getDrawable(R.drawable.shake_to_remove);
+			shakeToRemoveDrawable.setAlpha(mOpacity);
+			shakeToRemoveImageView.setImageDrawable(shakeToRemoveDrawable);
+		}
+		
+		ImageView overlayImageView = (ImageView) mOverlayView.findViewById(R.id.overlay_image);
 		mOverlayDrawable.setAlpha(mOpacity);
-		mView.setImageDrawable(mOverlayDrawable);
+		overlayImageView.setImageDrawable(mOverlayDrawable);
 	}
 
 
