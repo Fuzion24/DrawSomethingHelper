@@ -2,7 +2,7 @@
 <resources>
 
     <string name="search">Search</string>
-    <string name="app_name">Draw Help</string>
+    <string name="app_name">Draw Something Helper</string>
     <string name="hint">Image to search for....</string>
     
 	<color name="white">#FFFFFF</color>
@@ -19,6 +19,8 @@
     <string name="cancel">Cancel</string>
     <string name="error">Error</string>
     <string name="overlay_description">Image Overlay</string>
+    <string name="hijacker_tab">Word Setter</string>
+    <string name="helper_tab">Overlay Image</string>
     <string name="shake_to_remove">Shake to Remove</string>
     <string name="word_validation_error">Error adding word. Please ensure that your word contains only the letters a-z and is 1 to 9 letters long</string>
     <string name="start_server">Start Server</string>

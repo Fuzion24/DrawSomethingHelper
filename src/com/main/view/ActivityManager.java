@@ -22,12 +22,12 @@ public class ActivityManager extends TabActivity {
 	    
 	    spec = tabHost.newTabSpec("helper")
 	                  .setContent(intent)
-	                  .setIndicator("Helper");
+	                  .setIndicator(getResources().getString(R.string.helper_tab));
 	    tabHost.addTab(spec);
 
 	    intent = new Intent().setClass(this, DrawSomethingElseActivity.class);
 	    spec = tabHost.newTabSpec("hijacker")
-	    			  .setIndicator("Hijacker")
+	    			  .setIndicator(getResources().getString(R.string.hijacker_tab))
 	                  .setContent(intent);
 	    tabHost.addTab(spec);
 
