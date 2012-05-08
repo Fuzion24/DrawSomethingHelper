@@ -25,6 +25,7 @@ tmp/**/*
 *.bak
 *.swp
 *~.nib
+*keystore
 local.properties
 .classpath
 .settings/
