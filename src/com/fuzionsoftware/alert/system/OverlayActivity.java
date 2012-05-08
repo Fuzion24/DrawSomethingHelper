@@ -165,7 +165,7 @@ public class OverlayActivity extends Activity {
     	}
     	@Override
     	protected ArrayList<String> doInBackground(String... searchParameters) {
-    		int count = 50;
+    		int count = 25;
     		return GoogleImageSearch.searchGoogleImages(searchParameters[0], count);
     	}
     	
