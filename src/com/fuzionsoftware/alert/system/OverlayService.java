@@ -175,7 +175,6 @@ public class OverlayService extends Service implements SensorEventListener{
 			 			{
 			 				mLastChanged = System.currentTimeMillis();
 			 				setOverlayEnabled(!mOverlayEnabled);
-			 				mOverlayEnabled = !mOverlayEnabled;
 			 			}
 			 		} 
 			 		last_x = mX; 
