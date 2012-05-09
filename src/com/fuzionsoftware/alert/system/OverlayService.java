@@ -1,6 +1,10 @@
 package com.fuzionsoftware.alert.system;
 
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.app.Service;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.PixelFormat;
 import android.graphics.drawable.Drawable;
@@ -9,6 +13,7 @@ import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Binder;
+import android.os.Bundle;
 import android.os.IBinder;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -32,6 +37,12 @@ public class OverlayService extends Service implements SensorEventListener{
     private static View mOverlayView;
     private boolean mOverlayEnabled = false;
     
+    
+    //Notification Stuff
+	private Notification mDisableServiceNotification = new Notification(R.drawable.drawsomething_helper, "Disable Overlay Service",System.currentTimeMillis());
+    private NotificationManager mNotificationManager;
+    private int SIMPLE_NOTIFICATION_ID = 0x1337;
+    
 	@Override
 	public IBinder onBind(Intent intent) {
 		//Toast.makeText(this, "Service binded...", Toast.LENGTH_LONG).show();
@@ -45,33 +56,82 @@ public class OverlayService extends Service implements SensorEventListener{
 	    enableMotion();
 		if(mOverlayView == null)
 			createOrUpdateImageView();
+		
+		mNotificationManager = (NotificationManager) getApplicationContext().getSystemService(NOTIFICATION_SERVICE);
+		enableOverlayNotification();
 	}
 	
+	@Override
+	public void onStart(Intent intent, int startId)
+	{
+		super.onStart(intent, startId);
+		disableOverlayNotification(intent);
+	}
 	
 	private void enableMotion()
 	{
 		 // start motion detection 
-		 mSensorMgr=(SensorManager) getSystemService(SENSOR_SERVICE); 
+		 mSensorMgr = (SensorManager) getSystemService(SENSOR_SERVICE); 
 		 mSensorMgr.registerListener(this, mSensorMgr.getDefaultSensor(Sensor.TYPE_ACCELEROMETER), SensorManager.SENSOR_DELAY_NORMAL);
 	}
 	
-	private void toggleOverlay()
+	private void disableMotion()
 	{
-		WindowManager mWindowManager = (WindowManager) getSystemService(WINDOW_SERVICE);
-		if(!mOverlayEnabled)
+		mSensorMgr = (SensorManager) getSystemService(SENSOR_SERVICE); 
+		mSensorMgr.unregisterListener(this);
+	}
+	
+	private void setOverlayEnabled(boolean enabled)
+	{
+		WindowManager mWindowManager = (WindowManager) getApplicationContext().getSystemService(WINDOW_SERVICE);
+		if(enabled)
 		{
 			WindowManager.LayoutParams mWmlp = new WindowManager.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT);
 			mWmlp.flags = WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE | WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE;
 			mWmlp.type = WindowManager.LayoutParams.TYPE_SYSTEM_ALERT;
 			mWmlp.format = PixelFormat.TRANSPARENT;
-			mWindowManager.addView(mOverlayView, mWmlp);
+			try{ mWindowManager.addView(mOverlayView, mWmlp); }catch(IllegalStateException e){/* View already attached to the window manager*/}	
 			mOverlayEnabled = true;
 			//Toast.makeText(this, "Setting view on ", Toast.LENGTH_SHORT).show();
 		}else{
-			mWindowManager.removeView(mOverlayView);
+			try{ mWindowManager.removeView(mOverlayView); }
+			catch(IllegalArgumentException e){
+				/* View not attached to the window manager*/
+				System.out.println("");
+				}			
 			mOverlayEnabled = false;
 			//Toast.makeText(this, "Setting view off...", Toast.LENGTH_SHORT).show();
 		}
+	}
+	
+	private void enableOverlayNotification()
+	{
+		Context context = getApplicationContext();
+		CharSequence contentTitle = "Click to disable Draw Something Overlay Service";
+		CharSequence contentText = "After clicking, when you shake your phone the overlay will no longer be active";
+		Intent notifyIntent = new Intent(context,OverlayService.class);
+		notifyIntent.putExtra("DisableService", true);
+		PendingIntent intent = 	PendingIntent.getService(context, 0, notifyIntent, 0);
+
+		mDisableServiceNotification.setLatestEventInfo(context, contentTitle, contentText, intent);
+		mNotificationManager.notify(SIMPLE_NOTIFICATION_ID, mDisableServiceNotification);
+	}
+	
+	private void disableOverlayNotification(Intent intent)
+	{
+		if(intent == null)
+			return;
+		
+		Bundle bundle = intent.getExtras();
+
+		if(bundle != null && bundle.getBoolean("DisableService"))
+		{				
+			mNotificationManager.cancel(SIMPLE_NOTIFICATION_ID);
+			disableMotion();
+			setOverlayEnabled(false);			
+			stopSelf();
+		}
+		
 	}
 	
 	public void createOrUpdateImageView()
@@ -109,7 +169,8 @@ public class OverlayService extends Service implements SensorEventListener{
 			 			if((curTime - mLastChanged) > 1000) 
 			 			{
 			 				mLastChanged = System.currentTimeMillis();
-			 				toggleOverlay();
+			 				setOverlayEnabled(!mOverlayEnabled);
+			 				mOverlayEnabled = !mOverlayEnabled;
 			 			}
 			 		} 
 			 		last_x = mX; 

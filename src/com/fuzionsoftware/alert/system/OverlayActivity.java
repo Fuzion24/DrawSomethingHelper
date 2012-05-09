@@ -106,6 +106,7 @@ public class OverlayActivity extends Activity {
     	startService(new Intent(getApplicationContext(), OverlayService.class));
     	getApplicationContext().bindService(new Intent(getApplicationContext(), OverlayService.class), mServiceConnection, Context.BIND_AUTO_CREATE);
     }
+    
     private class SearchTextFocusListener implements OnFocusChangeListener
     {
 		@Override
