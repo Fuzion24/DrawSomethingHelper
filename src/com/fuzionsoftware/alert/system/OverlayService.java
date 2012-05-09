@@ -6,6 +6,7 @@ import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.graphics.PixelFormat;
 import android.graphics.drawable.Drawable;
 import android.hardware.Sensor;
@@ -39,7 +40,7 @@ public class OverlayService extends Service implements SensorEventListener{
     
     
     //Notification Stuff
-	private Notification mDisableServiceNotification = new Notification(R.drawable.drawsomething_helper, "Disable Overlay Service",System.currentTimeMillis());
+	private Notification mDisableServiceNotification;
     private NotificationManager mNotificationManager;
     private int SIMPLE_NOTIFICATION_ID = 0x1337;
     
@@ -107,13 +108,17 @@ public class OverlayService extends Service implements SensorEventListener{
 	private void enableOverlayNotification()
 	{
 		Context context = getApplicationContext();
-		CharSequence contentTitle = "Click to disable Draw Something Overlay Service";
-		CharSequence contentText = "After clicking, when you shake your phone the overlay will no longer be active";
+		Resources resources = context.getResources();
+		CharSequence contentTicker = resources.getText(R.string.disable_overlay_notification_ticker);
+		CharSequence contentTitle = resources.getText(R.string.disable_overlay_notification_title);
+		CharSequence contentText = resources.getText(R.string.disable_overlay_notification_text);
+		
 		Intent notifyIntent = new Intent(context,OverlayService.class);
 		notifyIntent.putExtra("DisableService", true);
 		PendingIntent intent = 	PendingIntent.getService(context, 0, notifyIntent, 0);
 
-		mDisableServiceNotification.setLatestEventInfo(context, contentTitle, contentText, intent);
+		mDisableServiceNotification = new Notification(R.drawable.drawsomething_helper,contentTicker,System.currentTimeMillis());
+		mDisableServiceNotification.setLatestEventInfo(context,contentTitle,contentText, intent);
 		mNotificationManager.notify(SIMPLE_NOTIFICATION_ID, mDisableServiceNotification);
 	}
 	

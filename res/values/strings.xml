@@ -17,6 +17,9 @@
     <string name="add_word_title">Add Word</string>
     <string name="ok">OK</string>
     <string name="cancel">Cancel</string>
+    <string name="disable_overlay_notification_title">Click to disable Draw Something Overlay Service</string>
+    <string name="disable_overlay_notification_ticker">After clicking, when you shake your phone the overlay will no longer be active</string>
+    <string name="disable_overlay_notification_text">After clicking, when you shake your phone the overlay will no longer be active</string>
     <string name="error">Error</string>
     <string name="overlay_description">Image Overlay</string>
     <string name="hijacker_tab">Word Setter</string>
